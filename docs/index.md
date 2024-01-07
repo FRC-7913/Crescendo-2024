@@ -5,6 +5,9 @@ layout: home
 
 Welcome to FRC Team 7913's programming blog!
 
+Here, we want to share our journey and the choices we make through the 2024 Crescendo season so future teams and teammates can
+understand the decisions that go into a (hopefully) strong robot.
+
 This is a *bare-minimum* template to create a Jekyll site that uses the [Just the Docs] theme. You can easily set the created site to be published on [GitHub Pages] – the [README] file explains how to do that, along with other details.
 
 If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^1] And you will be able to deploy your local build to a different platform than GitHub Pages.
