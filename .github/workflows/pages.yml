@@ -1,5 +1,5 @@
 # This workflow deploys the blog from the "blog/" folder to GitHub pages
-name: Deploy Jekyll site to Pages
+name: Deploy Development Blog to GitHub Pages
 
 on:
   push:
