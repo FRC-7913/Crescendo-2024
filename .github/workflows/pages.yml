@@ -5,7 +5,6 @@ on:
   push:
     branches: 
       - "main"
-      - "github-pages-docs" # For testing purposes before merging
     paths: ["docs/**"]
 
   # Allows you to run this workflow manually from the Actions tab
