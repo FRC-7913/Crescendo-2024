@@ -45,7 +45,7 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#robot-deployment">Robot Deployment</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -86,32 +86,32 @@ This project includes documentation on our choices and how various components of
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This project is used and deployed in the same way as any other WPI Project. [Their page](https://docs.wpilib.org/en/stable/docs/software/vscode-overview/deploying-robot-code.html) also covers deployment.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+> **Important:** You must build the robot code once while connected to the Internet to download all the dependencies.
 
-### Installation
+To ensure all dependencies are downloaded, you must build the robot code before connecting to the robot WiFi. There are three ways to do this.
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+1. With WPILib VS Code, click on the WPILib icon or open the command palette and type "WPILib". Select `Build Robot Code`.
+2. In IntelliJ, run the `Build Robot` task.
+3. On the command line, run `gradle build` (with Gradle installed), `gradlew.bat build` (on Windows), or `./gradlew build` (on macOS or Linux).
+
+Once the code dependencies are installed, connect to the robot. There are two ways to do this.
+
+1. By WiFi. With the robot WiFi network set up, connect your computer to the robot's WiFi network
+2. By cable. Connect an ethernet cable from the robot to your computer.
+
+### Robot Deployment
+
+With your computer connected to the robot, run the deploy task. 
+
+In VSCode, click on the WPILib icon or open the command palette and type WPILib. Select `Deploy Robot Code`.
+
+In IntelliJ, select the `Build & Deploy Robot` command.
+
+On the command line, run `gradle deploy` (with Gradle installed), `gradlew.bat deploy` (on Windows), or `./gradlew deploy` (on macOS or Linux).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
