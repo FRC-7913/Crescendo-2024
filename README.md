@@ -86,9 +86,11 @@ This project includes documentation on our choices and how various components of
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This project is used and deployed in the same way as any other WPI Project. [Their page](https://docs.wpilib.org/en/stable/docs/software/vscode-overview/deploying-robot-code.html) also covers deployment.
+This project is deployed in the same way as any other WPI Project. [Their page](https://docs.wpilib.org/en/stable/docs/software/vscode-overview/deploying-robot-code.html) also covers deployment.
 
 ### Prerequisites
+
+This assumes you have a working RoboRio connected to power, with or without a transmitter.
 
 > **Important:** You must build the robot code once while connected to the Internet to download all the dependencies.
 
