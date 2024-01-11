@@ -122,7 +122,16 @@ On the command line, run `gradle deploy` (with Gradle installed), `gradlew.bat d
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Each mode has a specific purpose.
+
+##### Teleop
+Fully operable, uses cameras to calibrate field position. To turn off camera features when not on a field to avoid bad readings of AprilTags, use `Test` mode. Selecting a driver station to work from for simulation may be helpful, too.
+
+##### Autonomous
+Runs the robot without driver input. If cameras and sensing aren't available, check the box on the Shuffleboard to select only auto modes without camera features.
+
+##### Test
+Has full driver control, but won't use cameras to calibrate position on field. Optionally, you can check a box to use camera calibration when running the shooter, which assumes you have AprilTags on a test Speaker.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
