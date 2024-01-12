@@ -9,7 +9,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -38,8 +37,6 @@ public class RobotContainer {
     private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/neo"));
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
-    CommandJoystick driverController = new CommandJoystick(1);
     private final XboxController driverXbox =
             new XboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
     
@@ -86,11 +83,6 @@ public class RobotContainer {
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                         OperatorConstants.LEFT_X_DEADBAND),
                 () -> driverXbox.getRawAxis(2), () -> true);
-        TeleopDrive closedFieldRel = new TeleopDrive(
-                drivebase,
-                () -> MathUtil.applyDeadband(driverController.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-                () -> MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-                () -> -driverController.getRawAxis(2), () -> true);
 
         drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
     }
