@@ -179,9 +179,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Team Email - frc7913@sau4.org
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/FRC-7913/Crescendo-2024](https://github.com/FRC-7913/Crescendo-2024)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
