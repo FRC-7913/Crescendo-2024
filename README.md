@@ -190,9 +190,8 @@ Project Link: [https://github.com/FRC-7913/Crescendo-2024](https://github.com/FR
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* Our mentor, [Dillon](https://github.com/dillontherrien) for help with organization and code
+* Our mentor, [Mrs. Mayo](https://github.com/MrsMayo-NRHS) for help with code planning
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
