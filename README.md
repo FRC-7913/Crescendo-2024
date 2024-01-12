@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/frc-7913/Crescendo-2024">
-    <img src="images/logo.png" alt="Logo" width="80" height="80" style="border-radius: 20%;">
+    <img src="images/logo.png" alt="Logo" width="100" height="100" style="border-radius: 20%;">
   </a>
 
 <h3 align="center">2024 Crescendo Code</h3>
