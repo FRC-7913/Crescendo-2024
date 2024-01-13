@@ -133,7 +133,7 @@ Runs the robot without driver input. If cameras and sensing aren't available, ch
 ##### Test
 Has full driver control, but won't use cameras to calibrate position on field. Optionally, you can check a box to use camera calibration when running the shooter, which assumes you have AprilTags on a test Speaker.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://FRC-7913.github.io/Crescendo-2024)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
