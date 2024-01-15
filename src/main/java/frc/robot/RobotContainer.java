@@ -8,7 +8,6 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -37,8 +36,8 @@ public class RobotContainer {
     private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/neo"));
 
-    private final XboxController driverXbox =
-            new XboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+    private final CommandXboxController driverXbox =
+            new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
     
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -72,10 +71,12 @@ public class RobotContainer {
                         OperatorConstants.LEFT_X_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                         OperatorConstants.RIGHT_X_DEADBAND),
-                driverXbox::getYButtonPressed,
-                driverXbox::getAButtonPressed,
-                driverXbox::getXButtonPressed,
-                driverXbox::getBButtonPressed);
+                driverXbox.getHID() // Gets underlying raw controller,
+                                    // which offers raw button values instead of triggers
+                        ::getYButtonPressed,
+                driverXbox.getHID()::getAButtonPressed,
+                driverXbox.getHID()::getXButtonPressed,
+                driverXbox.getHID()::getBButtonPressed);
 
         TeleopDrive simClosedFieldRel = new TeleopDrive(drivebase,
                 () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
