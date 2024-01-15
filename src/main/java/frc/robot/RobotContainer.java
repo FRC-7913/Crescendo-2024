@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -71,12 +72,13 @@ public class RobotContainer {
                         OperatorConstants.LEFT_X_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                         OperatorConstants.RIGHT_X_DEADBAND),
-                driverXbox.getHID() // Gets underlying raw controller,
-                                    // which offers raw button values instead of triggers
-                        ::getYButtonPressed,
-                driverXbox.getHID()::getAButtonPressed,
-                driverXbox.getHID()::getXButtonPressed,
-                driverXbox.getHID()::getBButtonPressed);
+                () -> isDegreeInRange(driverXbox.getHID() // Gets underlying raw controller,
+                                                        // which offers POV values instead of triggers
+                        .getPOV(), 315, 45), // 0° is up, ±45 degrees to trigger for an in-between press
+                () -> isDegreeInRange(driverXbox.getHID().getPOV(), 135, 225), // 180° - down
+                () -> isDegreeInRange(driverXbox.getHID().getPOV(), 225, 315), // 270° - left
+                () -> isDegreeInRange(driverXbox.getHID().getPOV(), 45, 135) // 90° - right
+                );
 
         TeleopDrive simClosedFieldRel = new TeleopDrive(drivebase,
                 () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -85,9 +87,28 @@ public class RobotContainer {
                         OperatorConstants.LEFT_X_DEADBAND),
                 () -> driverXbox.getRawAxis(2), () -> true);
 
-        drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
+        drivebase.setDefaultCommand(RobotBase.isReal() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
+
+        if (RobotBase.isReal()) {
+            driverXbox.a().onTrue(Commands.runOnce(() -> drivebase.setDefaultCommand(closedAbsoluteDriveAdv)));
+            driverXbox.b().onTrue(Commands.runOnce(() -> drivebase.setDefaultCommand(closedAbsoluteDrive)));
+        }
     }
-    
+
+    private static boolean isDegreeInRange(int degree, int min, int max) {
+
+        if (degree < 0 || min < 0 || max < 0) {
+            System.out.println("Warning: isDegreeInRange recieved a negative value. Undefined behavior may occur." + "\ndegree = " + degree + "\nmin = " + min + "\nmax = " + max);
+        }
+
+        degree = degree % 360; // Ensures the degree is between 0 and 360
+
+        if (min <= max) { // The min and max do not wrap around 360 degrees
+            return degree >= min && degree <= max;
+        } else {
+            return degree >= min || degree <= max;
+        }
+    }
     
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
