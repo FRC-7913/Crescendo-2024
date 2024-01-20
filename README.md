@@ -18,7 +18,7 @@
   <p align="center">
     FRC Team 7913
     <br />
-    <a href="https://frc-7913.github.io/Crescendo-2024/"><strong>Explore our journal »</strong></a>
+    <a href="https://docs.google.com/document/d/1M7Oz548wIvTrRy6KaBUEef_yJxwyxzNEqQ-dqRGJHIY/edit#heading=h.kx0wauulpjrx"><strong>Explore our journal »</strong></a>
     <br />
     <br />
     <a href="https://www.thebluealliance.com/team/7913">The Blue Alliance</a>
@@ -75,9 +75,6 @@ This project includes documentation on our choices and how various components of
 #### Robot Code
 * [WPILib](https://wpilib.org/)
 
-#### Documentation
-* [Jekyll](https://jekyllrb.com/)
-* [Just the Docs theme](https://just-the-docs.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -154,14 +151,13 @@ See the [project](https://github.com/FRC-7913/project/Crescendo-2024) or the [is
 Generally, work on this project will be done by the 7913 Programming team.
 Contributions, however, are welcome if you see some glaring issue.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request.
-Otherwise, you can open an issue and tag it with `bug` or `enhancement`.
+The easiest way to contribute is to open an issue.
+You can open an issue and tag it with `bug` or `enhancement`.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+See our [programming workflow document](https://docs.google.com/document/d/1sNsUPg90-Ui02BnugGDdsafTT9l4FStFcYlKmAF6HSg/edit#heading=h.gb7aqt9wikzw)
+for full documentation of how our contribution process works.
+For external contributors, please consider using this process, which differs from the typical GitHub workflow.
+Using this enables us to more easily collaborate with you and work with greater efficiency and speed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
