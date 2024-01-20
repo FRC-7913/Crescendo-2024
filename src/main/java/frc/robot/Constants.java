@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,5 +18,9 @@ package frc.robot;
 public final class Constants {
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
+    }
+    public static class SwerveDrivetrainConstants {
+        public static final String configFileDirectory = "swerve";
+        public static final double maximumSpeed = Units.feetToMeters(14.5);
     }
 }
