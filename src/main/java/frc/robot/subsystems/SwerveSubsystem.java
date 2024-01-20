@@ -1,9 +1,17 @@
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDrivetrainConstants;
@@ -38,6 +46,58 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (IOException e) {
             throw new RuntimeException("Failed to read swerve configuration", e);
         }
+
+        setupPathPlanner();
+    }
+
+    /**
+     * Setup AutoBuilder for PathPlanner
+     */
+    public void setupPathPlanner() {
+        AutoBuilder.configureHolonomic(
+                this::getPose, // Pose supplier
+                this::resetOdometry, // Method to reset odometry
+                this::getRobotVelocity, // ChassisSpeed supplier. Must be robot relative
+                this::setChassisSpeeds, // Method to drive given robot relative ChassisSpeeds
+                new HolonomicPathFollowerConfig(
+                        new PIDConstants(5.0,0.0,0.0), // Translation PID constants
+                        new PIDConstants(
+                                swerveDrive.swerveController.config.headingPIDF.p,
+                                swerveDrive.swerveController.config.headingPIDF.i,
+                                swerveDrive.swerveController.config.headingPIDF.d
+                        ), // Rotation PID constants, read from config files
+                        4.5, // Max module speed, in m/s
+                        swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(), // Drive base radius in meters.
+                        // Distance from robot center to the furthest module
+                        new ReplanningConfig() // Default config, may need to be tweaked
+                ),
+                () -> { // Tells to mirror path if on Red Alliance.
+                    var alliance = DriverStation.getAlliance(); // This is an optional, so it may not exist
+                    return alliance.isPresent() // We check that there is a value
+                            && alliance.get() == DriverStation.Alliance.Red; // Then whether it is red
+                },
+                this // References this subsystem to set requirements
+        );
+    }
+
+    /**
+     * Gets a PathPlanner path follower.
+     * Events, if registered elsewhere using {@link com.pathplanner.lib.auto.NamedCommands}, will be run.
+     *
+     * @param pathName The PathPlanner path name, as configured in the configuration
+     * @param setOdomToStart If true, will set the odometry to the start of the path
+     * @return {@link AutoBuilder#followPath(PathPlannerPath)} path command
+     */
+    public Command getPathPlannerFollowCommand(String pathName, boolean setOdomToStart) {
+        // Loads the path from the GUI name given
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+        if (setOdomToStart) {
+            resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+        }
+
+        // Creates a path following command using AutoBuilder. This will execute any named commands when running
+        return AutoBuilder.followPath(path);
     }
 
     /**
@@ -69,6 +129,28 @@ public class SwerveSubsystem extends SubsystemBase {
                 chassisSpeeds.omegaRadiansPerSecond);
         System.out.println("Inverting to set ChassisSpeeds to: " + chassisSpeeds);
         swerveDrive.setChassisSpeeds(inverted);
+    }
+
+    /**
+     * Use PathPlanner Path finding to go to a point on the field.
+     *
+     * @param pose Target {@link Pose2d} to go to.
+     * @return PathFinding command
+     */
+    public Command driveToPose(Pose2d pose)
+    {
+// Create the constraints to use while pathfinding
+        PathConstraints constraints = new PathConstraints(
+                swerveDrive.getMaximumVelocity(), 4.0,
+                swerveDrive.getMaximumAngularVelocity(), Units.degreesToRadians(720));
+
+// Since AutoBuilder is configured, we can use it to build pathfinding commands
+        return AutoBuilder.pathfindToPose(
+                pose,
+                constraints,
+                0.0, // Goal end velocity in meters/sec
+                0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+        );
     }
 
     /**
