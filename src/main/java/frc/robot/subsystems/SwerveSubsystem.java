@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -51,7 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX,
                                 DoubleSupplier headingY) {
-        // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
+        swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
         return run(() -> {
             double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
             double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
@@ -59,9 +60,9 @@ public class SwerveSubsystem extends SubsystemBase {
             driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(xInput, yInput,
                     headingX.getAsDouble(),
                     headingY.getAsDouble(),
-                    swerveDrive.getYaw().getRadians(),
+                    getHeading().getRadians(),
                     swerveDrive.getMaximumVelocity()));
-        });
+        }).finallyDo(() -> swerveDrive.setHeadingCorrection(false));
     }
 
     /**
@@ -79,7 +80,7 @@ public class SwerveSubsystem extends SubsystemBase {
             driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(translationX.getAsDouble(),
                     translationY.getAsDouble(),
                     rotation.getAsDouble() * Math.PI,
-                    swerveDrive.getYaw().getRadians(),
+                    getHeading().getRadians(),
                     swerveDrive.getMaximumVelocity()));
         });
     }
@@ -147,7 +148,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return The heading, as a {@link Rotation2d}
      */
     public Rotation2d getHeading() {
-        return swerveDrive.getYaw();
+        return swerveDrive.getOdometryHeading().unaryMinus();
     }
 
     /**
