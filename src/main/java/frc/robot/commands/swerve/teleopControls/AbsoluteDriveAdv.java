@@ -80,11 +80,11 @@ public class AbsoluteDriveAdv extends Command
             }
             // Face Right
             if (POVDegrees >= 45 && POVDegrees <= 135) {
-                headingX = 1;
+                headingX = -1;
             }
             // Face Left
             if (POVDegrees >= 225 && POVDegrees <= 315) {
-                headingX = -1;
+                headingX = 1;
             }
             // Face Towards the Drivers
             if (POVDegrees >= 135 && POVDegrees <= 225) {
