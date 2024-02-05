@@ -110,6 +110,9 @@ public class RobotContainer {
     private void configureBindings() {
         driverXbox.a().onTrue(Commands.runOnce(swerveSubsystem::zeroGyro));
 
+        driverXbox.x().toggleOnTrue(
+                swerveSubsystem.getPathPlannerFollowCommand("Super Simple", true));
+        
         driverXbox.y().onTrue(Commands.runOnce(
                 () -> System.out.println(swerveSubsystem.getPose())));
     }
