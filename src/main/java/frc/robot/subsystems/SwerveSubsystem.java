@@ -148,7 +148,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return The heading, as a {@link Rotation2d}
      */
     public Rotation2d getHeading() {
-        return swerveDrive.getOdometryHeading().unaryMinus();
+        return swerveDrive.getOdometryHeading();
     }
 
     /**
@@ -203,6 +203,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param initialHolonomicPose The pose to set the odometry to
      */
     public void resetOdometry(Pose2d initialHolonomicPose) {
+        System.out.println("Resetting Odometry: " + initialHolonomicPose.toString());
         swerveDrive.resetOdometry(initialHolonomicPose);
     }
 
