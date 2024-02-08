@@ -81,6 +81,18 @@ public class RobotContainer {
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
                 () -> driverXbox.getRawAxis(2));
 
+//        driverXbox.x().onTrue(
+//                Commands.runOnce(() -> {
+//                    System.out.println("Direct Angle");
+//                    swerveSubsystem.setDefaultCommand(driveFieldOrientedDirectAngle);
+//                }, swerveSubsystem));
+
+        driverXbox.b().onTrue(
+                Commands.runOnce(() -> {
+                    System.out.println("Angular Velocity");
+                    swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
+                }, swerveSubsystem));
+
         swerveSubsystem.setDefaultCommand(
                 !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
     }

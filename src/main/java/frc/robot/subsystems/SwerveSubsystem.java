@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -39,6 +38,37 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (IOException e) {
             throw new RuntimeException("Failed to read swerve configuration", e);
         }
+    }
+
+    /**
+     * Gets the current velocity (x, y and omega) of the robot
+     *
+     * @return A {@link ChassisSpeeds} object of the current velocity
+     */
+    public ChassisSpeeds getRobotVelocity() {
+        var actualVelocity = swerveDrive.getRobotVelocity();
+        System.out.println("Requested robot velocity: " + actualVelocity);
+        var inverted = new ChassisSpeeds(
+                -actualVelocity.vxMetersPerSecond,
+                -actualVelocity.vyMetersPerSecond,
+                actualVelocity.omegaRadiansPerSecond);
+        System.out.println("Inverting to: " + inverted);
+        return inverted;
+    }
+
+    /**
+     * Set chassis speeds with closed-loop velocity control.
+     *
+     * @param chassisSpeeds Chassis Speeds to set.
+     */
+    public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+        System.out.println("Requested to set ChassisSpeeds to: " + chassisSpeeds);
+        var inverted = new ChassisSpeeds(
+                -chassisSpeeds.vxMetersPerSecond,
+                -chassisSpeeds.vyMetersPerSecond,
+                chassisSpeeds.omegaRadiansPerSecond);
+        System.out.println("Inverting to set ChassisSpeeds to: " + chassisSpeeds);
+        swerveDrive.setChassisSpeeds(inverted);
     }
 
     /**
@@ -157,7 +187,11 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return The robot's pose
      */
     public Pose2d getPose() {
-        return swerveDrive.getPose();
+        var internalPose = swerveDrive.getPose();
+        System.out.println("Requested pose is " + internalPose);
+        var inverted = new Pose2d(internalPose.getTranslation().unaryMinus(), internalPose.getRotation());
+        System.out.println("Inverting requested pose to: " + inverted);
+        return inverted;
     }
 
     /**
@@ -204,7 +238,9 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void resetOdometry(Pose2d initialHolonomicPose) {
         System.out.println("Resetting Odometry: " + initialHolonomicPose.toString());
-        swerveDrive.resetOdometry(initialHolonomicPose);
+        var inverted = new Pose2d(initialHolonomicPose.getTranslation().unaryMinus(), initialHolonomicPose.getRotation());
+        System.out.println("Inverting Odometry reset request to: " + inverted);
+        swerveDrive.resetOdometry(inverted);
     }
 
     /**
