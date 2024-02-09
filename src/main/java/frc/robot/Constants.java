@@ -32,6 +32,6 @@ public final class Constants {
     }
     public static class SwerveDrivetrainConstants {
         public static final String configFileDirectory = "swerve";
-        public static final double maximumSpeed = Units.feetToMeters(14.5);
+        public static final double maximumSpeed = Units.feetToMeters(3.5);
     }
 }

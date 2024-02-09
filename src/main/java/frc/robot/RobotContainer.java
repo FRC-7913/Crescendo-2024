@@ -51,7 +51,7 @@ public class RobotContainer {
                         OperatorConstants.LEFT_Y_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                         OperatorConstants.LEFT_X_DEADBAND),
-                () -> -MathUtil.applyDeadband(driverXbox.getRightX(),
+                () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                         OperatorConstants.RIGHT_X_DEADBAND),
                 driverXbox.getHID()::getPOV);
 
@@ -63,7 +63,7 @@ public class RobotContainer {
         Command driveFieldOrientedDirectAngle = swerveSubsystem.driveCommand(
                 () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-                () -> driverXbox.getRightX(),
+                () -> -driverXbox.getRightX(),
                 () -> -driverXbox.getRightY());
 
         // Applies deadbands and inverts controls because joysticks
@@ -74,15 +74,27 @@ public class RobotContainer {
         Command driveFieldOrientedAngularVelocity = swerveSubsystem.driveCommand(
                 () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-                () -> driverXbox.getRawAxis(2));
+                () -> -driverXbox.getRightX());
 
         Command driveFieldOrientedDirectAngleSim = swerveSubsystem.simDriveCommand(
                 () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
                 () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
                 () -> driverXbox.getRawAxis(2));
 
+//        driverXbox.x().onTrue(
+//                Commands.runOnce(() -> {
+//                    System.out.println("Direct Angle");
+//                    swerveSubsystem.setDefaultCommand(driveFieldOrientedDirectAngle);
+//                }, swerveSubsystem));
+
+        driverXbox.b().onTrue(
+                Commands.runOnce(() -> {
+                    System.out.println("Angular Velocity");
+                    swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
+                }, swerveSubsystem));
+
         swerveSubsystem.setDefaultCommand(
-                !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
+                !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
     }
     
     
@@ -97,6 +109,9 @@ public class RobotContainer {
      */
     private void configureBindings() {
         driverXbox.a().onTrue(Commands.runOnce(swerveSubsystem::zeroGyro));
+
+        driverXbox.y().onTrue(Commands.runOnce(
+                () -> System.out.println(swerveSubsystem.getPose())));
     }
     
     
