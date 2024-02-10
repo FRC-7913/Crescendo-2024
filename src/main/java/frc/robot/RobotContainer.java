@@ -17,6 +17,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.swerve.teleopControls.AbsoluteDrive;
 import frc.robot.commands.swerve.teleopControls.AbsoluteDriveAdv;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.io.File;
@@ -31,6 +32,8 @@ import java.io.File;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(
             new File(Filesystem.getDeployDirectory(), Constants.SwerveDrivetrainConstants.configFileDirectory)
@@ -109,9 +112,15 @@ public class RobotContainer {
      */
     private void configureBindings() {
         driverXbox.a().onTrue(Commands.runOnce(swerveSubsystem::zeroGyro));
-
+        
         driverXbox.y().onTrue(Commands.runOnce(
                 () -> System.out.println(swerveSubsystem.getPose())));
+
+        intakeSubsystem.setDefaultCommand(Commands.run(() -> {
+                    intakeSubsystem.setIntakeSpeed(driverXbox.getLeftTriggerAxis());
+                    intakeSubsystem.setShooterSpeed(driverXbox.getRightTriggerAxis());
+                }, intakeSubsystem
+        ));
     }
     
     
